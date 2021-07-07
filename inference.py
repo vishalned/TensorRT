@@ -36,7 +36,7 @@ def load_images_to_buffer(pics, pagelocked_buffer):
    preprocessed = np.asarray(pics).ravel()
    np.copyto(pagelocked_buffer, preprocessed) 
 
-def do_inference(engine, pics_1, h_input_1, d_input_1, h_output, d_output, stream, batch_size, height, width):
+def do_inference(engine, pics_1, h_input_1, d_input_1, h_output, d_output, stream, batch_size, height, width, depth):
    """
    This is the function to run the inference
    Args:
@@ -72,5 +72,5 @@ def do_inference(engine, pics_1, h_input_1, d_input_1, h_output, d_output, strea
        # Synchronize the stream
        stream.synchronize()
        # Return the host output.
-       out = h_output.reshape((batch_size,-1, height, width))
+       out = h_output.reshape((batch_size,-1, height, width, depth))
        return out 
