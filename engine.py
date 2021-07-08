@@ -15,6 +15,9 @@ def build_engine(onnx_path, shape = [160 , 160 ,80, 1]):
        with open(onnx_path, 'rb') as model:
            parser.parse(model.read())
        network.get_input(0).shape = shape
+       print('-------------------------------')
+       print('network: ',network)
+       print('-------------------------------')
        engine = builder.build_cuda_engine(network)
        return engine
 
