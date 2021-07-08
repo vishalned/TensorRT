@@ -5,7 +5,7 @@ import tensorflow as tf
 import onnx
 import tf2onnx.convert
 
-model = tf.keras.models.load_model('./model.hdf5', compile = False)
+model = tf.keras.models.load_model('./model.hdf5')
 
 onnx_model, _ = tf2onnx.convert.from_keras(model, opset = 12)
 

@@ -1,2 +1,5 @@
 model.onnx
 model.hdf5
+model.plan
+test.nii.gz
+output.nii

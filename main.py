@@ -6,6 +6,8 @@ import inference as inf
 import keras
 import tensorrt as trt 
 
+TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
+trt_runtime = trt.Runtime(TRT_LOGGER)
 
 serialized_plan_fp32 = 'model.plan'
 HEIGHT = 160
@@ -48,9 +50,17 @@ img_normalized = (img_clipped - min_value) / (max_value - min_value)
 
 img_resized = resize_volume(img, (160, 160, 80))
 
+print('img_resized shape',img_resized.shape)
+#print(np.unique(img_resized))
+
 engine = eng.load_engine(trt_runtime, serialized_plan_fp32)
 h_input, d_input, h_output, d_output, stream = inf.allocate_buffers(engine, 1, trt.float32)
 out = inf.do_inference(engine, img_resized, h_input, d_input, h_output, d_output, stream, 1, HEIGHT, WIDTH, DEPTH)
+
+print('output shape from main', out.shape)
+
+output_img = nib.Nifti1Image(out, img_nii.affine)
+nib.save(output_img, 'output.nii')
 
 
 

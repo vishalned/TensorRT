@@ -18,6 +18,8 @@ def build_engine(onnx_path, shape = [160 , 160 ,80, 1]):
        print('-------------------------------')
        print('network: ',network)
        print('-------------------------------')
+       last_layer = network.get_layer(network.num_layers - 1)
+       network.mark_output(last_layer.get_output(0))
        engine = builder.build_cuda_engine(network)
        return engine
 

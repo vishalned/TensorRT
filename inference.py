@@ -21,9 +21,11 @@ def allocate_buffers(engine, batch_size, data_type):
 
    """
 
+   #print(engine.get_binding_shape(0))
+   #print(trt.volume(engine.get_binding_shape(0)))
    # Determine dimensions and create page-locked memory buffers (which won't be swapped to disk) to hold host inputs/outputs.
-   h_input_1 = cuda.pagelocked_empty(batch_size * trt.volume(engine.get_binding_shape(0)), dtype=trt.nptype(data_type))
-   h_output = cuda.pagelocked_empty(batch_size * trt.volume(engine.get_binding_shape(1)), dtype=trt.nptype(data_type))
+   h_input_1 = cuda.pagelocked_empty(batch_size * trt.volume((160,160,80)), dtype=trt.nptype(data_type))
+   h_output = cuda.pagelocked_empty(batch_size * trt.volume((160, 160, 80, 4)), dtype=trt.nptype(data_type))
    # Allocate device memory for inputs and outputs.
    d_input_1 = cuda.mem_alloc(h_input_1.nbytes)
 
@@ -55,7 +57,8 @@ def do_inference(engine, pics_1, h_input_1, d_input_1, h_output, d_output, strea
       The list of output images
 
    """
-
+   print('gpu var shape',h_input_1.shape)
+   print('image shape in inference',pics_1.shape)
    load_images_to_buffer(pics_1, h_input_1)
 
    with engine.create_execution_context() as context:
