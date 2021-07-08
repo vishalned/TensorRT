@@ -2,7 +2,7 @@ import tensorrt as trt
 
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
 trt_runtime = trt.Runtime(TRT_LOGGER)
-def build_engine(onnx_path, shape = [1,224,224,3]):
+def build_engine(onnx_path, shape = [160 , 160 ,80, 1]):
 
    """
    This is the function to create the TensorRT engine
